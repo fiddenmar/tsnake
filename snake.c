@@ -32,6 +32,7 @@ void tsnake_snake_destroy(tsnake_snake_t *s)
 	free(s);
 }
 
+//Получение координат из направления движения
 static void tsnake_snake_delta_from_direction(int *delta_x, int *delta_y, tsnake_move_direction_t d)
 {
 	switch (d)
@@ -51,6 +52,7 @@ static void tsnake_snake_delta_from_direction(int *delta_x, int *delta_y, tsnake
 	}
 }
 
+//Проверка на столкновение со змеей
 static tsnake_move_result_t tsnake_snake_check_snake(tsnake_snake_t *s, tsnake_move_direction_t d)
 {
 	struct tsnake_body *i;
@@ -76,6 +78,7 @@ static tsnake_move_result_t tsnake_snake_check_snake(tsnake_snake_t *s, tsnake_m
 	return TSNAKE_MOVE_RESULT_NONE;
 }
 
+//Проверка на столкновение с фруктом
 static tsnake_move_result_t tsnake_snake_check_fruit(tsnake_snake_t *s, struct tsnake_fruit *f, tsnake_move_direction_t d)
 {
 	struct tsnake_body *i;
@@ -97,6 +100,7 @@ static tsnake_move_result_t tsnake_snake_check_fruit(tsnake_snake_t *s, struct t
 	return TSNAKE_MOVE_RESULT_NONE;
 }
 
+//Проверка на столкновение с краем поля
 static tsnake_move_result_t tsnake_snake_check_coords(tsnake_snake_t *s, tsnake_move_direction_t d, const int field_height, const int field_width)
 {
 	int delta_x = 0;
@@ -112,6 +116,7 @@ static tsnake_move_result_t tsnake_snake_check_coords(tsnake_snake_t *s, tsnake_
 	return TSNAKE_MOVE_RESULT_LOSE;
 }
 
+//Непосредственно движение
 static void tsnake_snake_do_move(tsnake_snake_t *s, tsnake_move_direction_t d, const int result)
 {
 	struct tsnake_body *t;

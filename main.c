@@ -8,6 +8,8 @@
 #include "snake.h"
 #include "fruit.h"
 
+
+//Создание фрукта с учетом положения змеи (исключение возможности коллизии при создании)
 void spawn_fruit(struct tsnake_fruit **f, struct tsnake_snake *s, int heigth, int width)
 {
     int collide = 1;
@@ -24,6 +26,7 @@ void spawn_fruit(struct tsnake_fruit **f, struct tsnake_snake *s, int heigth, in
     tsnake_fruit_create(f, x, y);
 }
 
+//Очистка поля
 void clear_map(char **map, const int height, const int width)
 {
     for (int i = 0; i < width; i++)
@@ -33,6 +36,7 @@ void clear_map(char **map, const int height, const int width)
         }
 }
 
+//Вывод поля на экран
 void print_map(char **map, const int height, const int width)
 {
     for (int i=0; i<height; i++)
@@ -48,6 +52,7 @@ void print_map(char **map, const int height, const int width)
     }
 }
 
+//Проверка нажатия клавиши
 int kbhit(void)
 {
     int ch = getch();
@@ -81,7 +86,6 @@ int main(void)
     }
     clear_map(map, height, width);
 
-
     char control;
     enum tsnake_move_direction current_move = TSNAKE_MOVE_DIRECTION_RIGHT;
     enum tsnake_move_direction last_move = TSNAKE_MOVE_DIRECTION_RIGHT;
@@ -93,17 +97,21 @@ int main(void)
     int score = 0;
     int lose = 0;
 
-
+//Игровой цикл
     while (1)
     {
         if (!lose)
         {
+            //Рисование
             clear_map(map, height, width);
             tsnake_fruit_to_map(fruit, map, height, width);
             tsnake_snake_to_map(snake, map, height, width);
             print_map(map, height, width);
             refresh();
+
             usleep(200000);
+
+            //Обработка ввода
             if (kbhit())
             {
                 control = getch();
@@ -136,8 +144,11 @@ int main(void)
             {
                 last_move = current_move;
             }
+
+            //Движение змеи
             int result = tsnake_snake_move(snake, fruit, current_move, height, width);
-            mvprintw(1, 0, "result: %d", result);
+
+            //Обновление состояния игры на основе результатов движения
             if (result & TSNAKE_MOVE_RESULT_FRUIT)
             {
                 score+10;
@@ -149,11 +160,14 @@ int main(void)
         }
         else
         {
+            //Экран проигрыша
             mvprintw(1, 0, "Game over! Press ^C to exit");
             refresh();
         }
         mvprintw(0, 0, "Score: %d", score);
     }
+
+    //Очистка
     tsnake_snake_destroy(snake);
     tsnake_fruit_destroy(fruit);
     for (int i = 0; i < width; i++)
