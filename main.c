@@ -10,15 +10,15 @@
 
 
 //Создание фрукта с учетом положения змеи (исключение возможности коллизии при создании)
-void spawn_fruit(struct tsnake_fruit **f, struct tsnake_snake *s, int heigth, int width)
+void spawn_fruit(struct tsnake_fruit **f, struct tsnake_snake *s, int height, int width)
 {
     int collide = 1;
     int x;
     int y;
     while (collide)
     {
-        x = rand()%(width*9 / 10) + 3;
-        y = rand()%(heigth*9 / 10) + 3;
+        x = rand()%(width);
+        y = rand()%(height);
         struct tsnake_point *coords;
         tsnake_point_create(&coords, x, y);
         collide = tsnake_snake_collide(s, coords);
@@ -151,7 +151,7 @@ int main(void)
             //Обновление состояния игры на основе результатов движения
             if (result & TSNAKE_MOVE_RESULT_FRUIT)
             {
-                score+10;
+                score+=10;
                 tsnake_fruit_destroy(fruit);
                 spawn_fruit(&fruit, snake, height, width);
             }
