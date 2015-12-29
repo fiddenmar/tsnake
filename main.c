@@ -1,8 +1,9 @@
+#define _BSD_SOURCE
+
 #include <ncurses.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdio.h>
 
 #include "snake.h"
 #include "fruit.h"
@@ -139,7 +140,7 @@ int main(void)
             mvprintw(1, 0, "result: %d", result);
             if (result & TSNAKE_MOVE_RESULT_FRUIT)
             {
-                score++;
+                score+10;
                 tsnake_fruit_destroy(fruit);
                 spawn_fruit(&fruit, snake, height, width);
             }
@@ -148,10 +149,10 @@ int main(void)
         }
         else
         {
-            mvprintw(1, 0, "you lose! ^C to exit");
+            mvprintw(1, 0, "Game over! Press ^C to exit");
             refresh();
         }
-        mvprintw(0, 0, "score: %d", score);
+        mvprintw(0, 0, "Score: %d", score);
     }
     tsnake_snake_destroy(snake);
     tsnake_fruit_destroy(fruit);
